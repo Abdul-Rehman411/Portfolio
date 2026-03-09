@@ -18,6 +18,7 @@ const CLI = ({ secrets }) => {
 
   //useRef to create a new reference
   const outputEndRef = useRef(null);
+  const errorAudioRef = useRef(null);
 
   //useEffect to use scrollToBottom feature
   useEffect(() => {
@@ -26,6 +27,14 @@ const CLI = ({ secrets }) => {
       behavior: "smooth",
     });
   }, [output]);
+
+  // Preload the error sound so it can play immediately on wrong commands
+  useEffect(() => {
+    errorAudioRef.current = new Audio(
+      "https://www.myinstants.com/media/sounds/faahhhhhhhh.mp3"
+    );
+    errorAudioRef.current.preload = "auto";
+  }, []);
 
   const commands = {
     help: (
@@ -332,6 +341,9 @@ const CLI = ({ secrets }) => {
           </div>
         );
       } else {
+        // Play error sound for unknown commands
+        errorAudioRef.current?.play().catch(() => {});
+
         newOutput.push(
           <div>
             <span className="text-cyan-400">visitor@abdulrehman~$</span>&nbsp;
