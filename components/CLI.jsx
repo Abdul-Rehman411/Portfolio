@@ -1,0 +1,388 @@
+"use client";
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { GetServerSideProps } from "next";
+
+const CLI = ({ secrets }) => {
+  const { secretOne, secretTwo } = secrets;
+  var [command, setCommand] = useState("");
+  const [history, setHistory] = useState([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const [theme, setTheme] = useState("dark");
+
+  const [output, setOutput] = useState([
+    "Hii There!",
+    "Type 'help' to get a list of available commands.",
+    "Use ↑ and ↓ to navigate command history.",
+  ]);
+
+  //useRef to create a new reference
+  const outputEndRef = useRef(null);
+
+  //useEffect to use scrollToBottom feature
+  useEffect(() => {
+    // Scroll to the bottom whenever the output changes
+    outputEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [output]);
+
+  const commands = {
+    help: (
+      <div>
+        <div className="text-blue-600 font-semibold">Available commands:</div>
+        <div className="flex flex-col">
+          <div className="flex gap-2 items-center">
+            <Link href="https://facebook.com" target="_blank">
+              <p className="text-orange-500"> about</p>
+            </Link>{" "}
+            <p className="font-thin">- Learn more about me</p>
+          </div>
+          <div className="flex gap-2 items-center">
+            <p className="text-orange-500"> socials </p>{" "}
+            <p className="font-thin">- Find me on the web</p>
+          </div>
+          <div className="flex gap-2 items-center">
+            <p className="text-orange-500"> skills </p>{" "}
+            <p className="font-thin">- Check out my technical skills</p>
+          </div>
+          <div className="flex gap-2 items-center">
+            <p className="text-orange-500"> projects </p>{" "}
+            <p className="font-thin">- View some of my cool projects</p>
+          </div>
+          <div className="flex gap-2 items-center">
+            <p className="text-orange-500"> resume </p>{" "}
+            <p className="font-thin">- Show my resume</p>
+          </div>
+
+          <div className="flex gap-2 items-center">
+            <p className="text-orange-500"> clear </p>{" "}
+            <p className="font-thin">- Clear the terminal</p>
+          </div>
+        </div>
+      </div>
+    ),
+    about: (
+      <pre>
+        &nbsp;&nbsp;&nbsp;&nbsp;I’m a{" "}
+        <span className="text-orange-500">developer</span> from Nepal with a
+        focus on learning across a wide tech landscape—from <br></br>
+        backend services in{" "}
+        <span className="text-lime-500">.NET & Nodejs </span> to frontend
+        finesse with{" "}
+        <span className="text-lime-500">React, Next.js, and Tailwind CSS</span>.{" "}
+        <br></br>
+        Always a learner, I believe in approaching challenges with{" "}
+        <span className="text-red-500">curiosity</span> and an eagerness to
+        expand my toolkit. <br></br>
+        If there’s one thing I’d say defines me, it’s my drive to understand how
+        each line of code connects to the bigger picture.<br></br>
+        I’m building cool things—
+        <span className="text-amber-500">one</span> project,{" "}
+        <span className="text-amber-500"> one </span>command,
+        <span className="text-amber-500"> one </span>insight at a time.,
+      </pre>
+    ),
+    socials: (
+      <div>
+        <span>Find me on:</span>
+        <div className="flex gap-2">
+          <Link
+            href="https://github.com/abdul-rehman411"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="text-blue-500">GitHub</span>
+          </Link>
+          <Link
+            href="https://twitter.com/abdulrehman411"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="text-blue-500">Twitter</span>
+          </Link>
+          <Link
+            href="mailto:abdulrehman4070411@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="text-blue-500">Email</span>
+          </Link>
+        </div>
+      </div>
+    ),
+
+    skills: (
+      <pre>
+        <span className="text-orange-500">Technical Skills:</span>
+        <ul className="pl-9">
+          <li>
+            <span className="text-orange-500">Frameworks and Libraries:</span>{" "}
+            Node.js, .NET , Express, ,React, Next.js, Tailwind
+          </li>
+          <li>
+            <span className="text-orange-500">Databases:</span> MongoDB, MySQL
+          </li>
+          <li>
+            <span className="text-orange-500">Languages:</span> Javascript , C#
+            , Python , C++
+          </li>
+          <li>
+            <span className="text-orange-500">Version Control:</span> Git,
+            GitHub
+          </li>
+          <li>
+            <span className="text-orange-500">Miscellaneous:</span> Docker, Bash
+            , Bootstrap ,Postman , wsl
+          </li>
+        </ul>
+      </pre>
+    ),
+
+    projects: (
+      <pre className="whitespace-pre-wrap break-words">
+        <span className="text-orange-500">Projects</span>
+        <br />
+        <span className="text-green-500">
+          <a
+            href="https://iqrasity.org"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Iqrasity — Next-Gen Educational Marketplace
+          </a>
+        </span>{" "}
+        - A modern headless educational marketplace integrating Moodle LMS with
+        Strapi CMS. Built a scalable Next.js frontend with hybrid data
+        orchestration, dynamic mega-menu navigation, SSO authentication,
+        automated LMS-CMS synchronization, and advanced SEO optimization for
+        thousands of course pages.
+        <br />
+        <br />
+        <span className="text-green-500">
+          <a
+            href="https://github.com/Abdul-Rehman411/whatchat"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WhatChat
+          </a>
+        </span>{" "}
+        - A full-stack real-time chat application built with the MERN stack
+        featuring Socket.IO messaging, JWT authentication, Cloudinary file
+        uploads, and a responsive UI inspired by WhatsApp.
+        <br />
+        <br />
+        <span className="text-green-500">
+          <a
+            href="https://tailorease.vercel.app"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            TailorEase Platform
+          </a>
+        </span>{" "}
+        - A custom tailoring platform connecting customers with tailors for
+        personalized orders, featuring 3D virtual try-on, AI chatbot support,
+        wallet payouts, and real-time order tracking.
+        <br />
+        <br />
+        <span className="text-green-500">
+          <a
+            href="https://medalignsolutions.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            MedAlign Solutions
+          </a>
+        </span>{" "}
+        - A healthcare portfolio website built in WordPress with responsive
+        layouts, chatbot integration, and consultation request forms.
+        <br />
+        <br />
+        <span className="text-green-500">
+          <a
+            href="https://vltadvisors.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            VLT Advisers
+          </a>
+        </span>{" "}
+        - A financial consulting website built with WordPress featuring
+        responsive layouts, modern design, and interactive client inquiry forms.
+        <br />
+      </pre>
+    ),
+
+    resume: (
+      <pre>
+        <span className="text-orange-500">Resume: </span>
+        <span className="text-green-500">
+          <a
+            href="resume.pdf" // Change this to your actual resume path
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
+            View Resume (PDF)
+          </a>
+        </span>
+      </pre>
+    ),
+
+    clear: "clear",
+  };
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.style.setProperty("--bg-color", "#010101");
+      // document.documentElement.style.setProperty('--text-color', '#f1f1f1');
+    }
+    if (theme === "light") {
+      document.documentElement.style.setProperty("--bg-color", "#940044"); //940064
+      // document.documentElement.style.setProperty('--text-color', '#f1faf1');
+    }
+  }, [theme]);
+
+  //handle every new keypress
+  const handleKeyPress = (event) => {
+    if (event.key == "Enter") {
+      if (command === secretOne || command === "light") {
+        setTheme("light");
+      } else if (command === secretTwo || command === "dark") {
+        setTheme("dark");
+      }
+    }
+
+    if (event.key == "Tab") {
+      event.preventDefault();
+
+      const matchingCommands = Object.keys(commands).filter((cmd) =>
+        cmd.startsWith(command.toLowerCase())
+      ); //finds the number of matching commands
+
+      if (matchingCommands.length >= 1) {
+        setCommand(matchingCommands[0]); //sets first suggestion to command
+      } //checks for number of matching commands available
+    }
+    //Arrow key navigation
+    if (event.key == "ArrowUp" || event.key == "ArrowDown") {
+      event.preventDefault();
+
+      setHistoryIndex((historyIndex) => {
+        if (event.key == "ArrowUp") {
+          const newIndex = Math.max(historyIndex - 1, 0);
+          setCommand(history[newIndex] || "");
+          return newIndex;
+        } else if (event.key == "ArrowDown") {
+          const newIndex = Math.min(history.length - 1, historyIndex + 1);
+          setCommand(history[newIndex] || "");
+          return newIndex;
+        }
+        return historyIndex;
+      });
+    }
+  };
+
+  //handle every new key change/updation
+  const handleChange = (event) => {
+    setCommand(event.target.value); //updates command state as user types
+  };
+
+  const handleCommand = (e) => {
+    e.preventDefault();
+
+    //handle whitespaces--------------------------------------------------//
+    command = command.trim();
+
+    let newOutput = [...output];
+
+    setHistory([...history, command]);
+    setHistoryIndex(history.length);
+
+    if (commands[command]) {
+      if (command === "clear") {
+        newOutput = [
+          "Welcome to my portfolio!",
+          "Type 'help' to get a list of available commands.",
+          "Use ↑ and ↓ to navigate command history.",
+        ];
+      } else {
+        newOutput.push(
+          <div>
+            <span className="text-cyan-400">visitor@abdulrehman~$</span>&nbsp;
+            <span className="text-purple-600">{command}</span>
+          </div>,
+          commands[command],
+          <br />
+        );
+      }
+    } else {
+      if (
+        command == secretOne ||
+        command == secretTwo ||
+        command === "light" ||
+        command === "dark"
+      ) {
+        newOutput.push(
+          <div>
+            <span className="text-cyan-400">visitor@abdulrehman~$</span>&nbsp;
+            <span className="text-yellow-200">{command}</span>
+          </div>
+        );
+      } else {
+        newOutput.push(
+          <div>
+            <span className="text-cyan-400">visitor@abdulrehman~$</span>&nbsp;
+            {command}
+          </div>,
+          <div>
+            <span className="text-red-700">command not found</span>&nbsp;
+            {command}
+          </div>,
+          <br />
+        );
+      }
+    }
+
+    setOutput(newOutput);
+    setCommand("");
+  };
+
+  return (
+    <div className="text-white  font-mono flex flex-col justify-start items-start h-screen ">
+      {output.map((line, index) => (
+        <p
+          key={index}
+          className={`whitespace-pre-wrap
+           ${
+             typeof line == "string" &&
+             (line.includes("help") || line.includes("commands"))
+               ? "text-orange-400"
+               : "text-white"
+           }`}
+        >
+          {line}
+        </p>
+      ))}
+      {/* ################################   Use Reference    #####################################*/}
+      <div ref={outputEndRef} />
+      {/* ################################   Use Reference    #####################################*/}{" "}
+      {/* keeps the view scrolled to the bottom  */}
+      <form onSubmit={handleCommand} className="flex">
+        <span className="text-cyan-400">visitor@abdulrehman~$</span>&nbsp;
+        <input
+          type="text"
+          value={command}
+          onChange={handleChange}
+          onKeyDown={handleKeyPress}
+          className="bg-transparent outline-none text-purple-600 flex-1"
+          autoFocus
+        />
+      </form>
+    </div>
+  );
+};
+
+export default CLI;
