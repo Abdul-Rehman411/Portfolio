@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Balancer from "react-wrap-balancer";
 import { GetServerSideProps } from "next";
 
 const CLI = ({ secrets }) => {
@@ -72,21 +73,23 @@ const CLI = ({ secrets }) => {
       </div>
     ),
     about: (
-      <pre>
-        &nbsp;&nbsp;&nbsp;&nbsp;Hi, I’m <span className="text-orange-500">Abdul Rehman</span>, a Full-Stack Developer with a strong interest in building scalable, modern web applications and solving real-world problems through technology.
-        <br></br>
-        I primarily work with JavaScript ecosystems including <span className="text-lime-500">React, Next.js, and the MERN stack</span>, and I enjoy creating clean, efficient, and user-focused digital products.
-        <br></br>
-        My experience includes developing dynamic web platforms, integrating complex backend services, and designing responsive interfaces that deliver smooth user experiences.
-        <br></br>
-        I’ve built projects ranging from real-time applications to large-scale web platforms, focusing on performance optimization, system architecture, and seamless API integrations.
-        <br></br>
-        One key project was an educational marketplace platform where I helped integrate a headless architecture combining an LMS with a CMS, enabling scalable course management and modern frontend experiences.
-        <br></br>
-        Beyond coding, I’m passionate about continuously improving my skills, exploring new tools in the web ecosystem, and building projects that push my technical abilities further.
-        <br></br>
-        My goal is to contribute to impactful products while growing as an engineer and problem solver.
-      </pre>
+      <div className="max-w-prose text-justify">
+        <Balancer>
+          <span className="text-orange-500">Hi, I’m Abdul Rehman</span>, a Full-Stack Developer with a strong interest in building scalable, modern web applications and solving real-world problems through technology.
+          <br />
+          I primarily work with JavaScript ecosystems including <span className="text-lime-500">React, Next.js, and the MERN stack</span>, and I enjoy creating clean, efficient, and user-focused digital products.
+          <br />
+          My experience includes developing dynamic web platforms, integrating complex backend services, and designing responsive interfaces that deliver smooth user experiences.
+          <br />
+          I’ve built projects ranging from real-time applications to large-scale web platforms, focusing on performance optimization, system architecture, and seamless API integrations.
+          <br />
+          One key project was an educational marketplace platform where I helped integrate a headless architecture combining an LMS with a CMS, enabling scalable course management and modern frontend experiences.
+          <br />
+          Beyond coding, I’m passionate about continuously improving my skills, exploring new tools in the web ecosystem, and building projects that push my technical abilities further.
+          <br />
+          My goal is to contribute to impactful products while growing as an engineer and problem solver.
+        </Balancer>
+      </div>
     ),
     socials: (
       <div>

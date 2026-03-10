@@ -25,10 +25,12 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          {/* <Header /> */}
-          {children}
-        </ThemeProvider>
+        <div className="mx-auto max-w-5xl px-4">
+          <ThemeProvider attribute="class" defaultTheme="dark">
+            {/* <Header /> */}
+            {children}
+          </ThemeProvider>
+        </div>
       </body>
     </html>
   );
