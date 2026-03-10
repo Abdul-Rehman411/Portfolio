@@ -20,6 +20,9 @@ const CLI = ({ secrets }) => {
   //useRef to create a new reference
   const outputEndRef = useRef(null);
   const errorAudioRef = useRef(null);
+  const startupAudioRef = useRef(null);
+  const keyAudioRef = useRef(null);
+  const activeAudioRef = useRef(null); // Tracks the most recent non-keypress sound
 
   //useEffect to use scrollToBottom feature
   useEffect(() => {
@@ -29,13 +32,88 @@ const CLI = ({ secrets }) => {
     });
   }, [output]);
 
-  // Preload the error sound so it can play immediately on wrong commands
+  // Preload the error sound so it can play immediately on wrong commands.
   useEffect(() => {
     errorAudioRef.current = new Audio(
       "https://www.myinstants.com/media/sounds/faahhhhhhhh.mp3"
     );
     errorAudioRef.current.preload = "auto";
+
+    // Play a startup sound once when the page loads.
+    const startupAudio = new Audio("/salam-aleykum-memes-mp3cut.mp3");
+    startupAudio.preload = "auto";
+    startupAudioRef.current = startupAudio;
+
+    playUiSound(startupAudio).catch(() => {
+      // Autoplay may be blocked; will be retried on first user interaction.
+      const retry = () => {
+        playUiSound(startupAudioRef.current);
+        window.removeEventListener("keydown", retry);
+        window.removeEventListener("mousedown", retry);
+      };
+      window.addEventListener("keydown", retry, { once: true });
+      window.addEventListener("mousedown", retry, { once: true });
+    });
   }, []);
+
+  // Use Web Audio to decode and play the local keypress sound (stored in public/).
+  const audioContextRef = useRef(null);
+  const keypressBufferRef = useRef(null);
+
+  useEffect(() => {
+    if (!window.AudioContext && !window.webkitAudioContext) return;
+
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioContext();
+    audioContextRef.current = ctx;
+
+    // Decode local audio file once so playback is instant.
+    fetch("/dragon-studio-single-key-press-393908.mp3")
+      .then((res) => res.arrayBuffer())
+      .then((buffer) => ctx.decodeAudioData(buffer))
+      .then((audioBuffer) => {
+        keypressBufferRef.current = audioBuffer;
+      })
+      .catch(() => {
+        // ignore; keypress sound will simply not play
+      });
+  }, []);
+
+  const playKeySound = () => {
+    const ctx = audioContextRef.current;
+    const buffer = keypressBufferRef.current;
+
+    if (!ctx || !buffer) return;
+
+    if (ctx.state === "suspended") {
+      ctx.resume().catch(() => {});
+    }
+
+    const source = ctx.createBufferSource();
+    const gain = ctx.createGain();
+
+    source.buffer = buffer;
+    gain.gain.value = 0.25;
+
+    source.connect(gain).connect(ctx.destination);
+    source.start();
+  };
+
+  const stopActiveUiSound = () => {
+    const current = activeAudioRef.current;
+    if (current && !current.paused) {
+      current.pause();
+      current.currentTime = 0;
+    }
+  };
+
+  const playUiSound = (audio, volume = 0.5) => {
+    if (!audio) return;
+    stopActiveUiSound();
+    audio.volume = volume;
+    activeAudioRef.current = audio;
+    return audio.play().catch(() => {});
+  };
 
   const commands = {
     help: (
@@ -72,6 +150,7 @@ const CLI = ({ secrets }) => {
         </div>
       </div>
     ),
+
     about: (
       <div className="max-w-prose text-justify">
         <Balancer>
@@ -257,6 +336,16 @@ const CLI = ({ secrets }) => {
 
   //handle every new keypress
   const handleKeyPress = (event) => {
+    const shouldPlayKeySound =
+      event.key.length === 1 ||
+      event.key === "Backspace" ||
+      event.key === "Enter" ||
+      event.key === " ";
+
+    if (shouldPlayKeySound) {
+      playKeySound();
+    }
+
     if (event.key == "Enter") {
       if (command === secretOne || command === "light") {
         setTheme("light");
@@ -313,12 +402,96 @@ const CLI = ({ secrets }) => {
 
     if (commands[command]) {
       if (command === "clear") {
+        // Play clean-up sound on clear command
+        const cleanupAudio = new Audio("/sad-meow-song.mp3");
+        playUiSound(cleanupAudio, 0.5);
+
         newOutput = [
           "Welcome to my portfolio!",
           "Type 'help' to get a list of available commands.",
           "Use ↑ and ↓ to navigate command history.",
         ];
-      } else {
+      } else if (command === "help") {
+        // Play the help sound
+        const helpAudio = new Audio("/acha-ji-aisa-hai-kya.mp3");
+        playUiSound(helpAudio, 0.5);
+
+        newOutput.push(
+          <div>
+            <span className="text-cyan-400">visitor@abdulrehman~$</span>&nbsp;
+            <span className="text-purple-600">{command}</span>
+          </div>,
+          commands[command],
+          <br />
+        );
+      } else if (command === "about") {
+        // Play the chalo sound for about command
+        const chaloAudio = new Audio("/chalo.mp3");
+        playUiSound(chaloAudio, 0.5);
+
+        newOutput.push(
+          <div>
+            <span className="text-cyan-400">visitor@abdulrehman~$</span>&nbsp;
+            <span className="text-purple-600">{command}</span>
+          </div>,
+          commands[command],
+          <br />
+        );
+      } else if (command === "skills") {
+        // Play the chalo sound for skills command
+        const chaloAudio = new Audio("/chalo.mp3");
+        playUiSound(chaloAudio, 0.5);
+
+        newOutput.push(
+          <div>
+            <span className="text-cyan-400">visitor@abdulrehman~$</span>&nbsp;
+            <span className="text-purple-600">{command}</span>
+          </div>,
+          commands[command],
+          <br />
+        );
+      } else if (command === "projects") {
+        // Play the counter sound for projects command
+        const counterAudio = new Audio("/counter-ok-elts-go.mp3");
+        playUiSound(counterAudio, 0.5);
+
+        newOutput.push(
+          <div>
+            <span className="text-cyan-400">visitor@abdulrehman~$</span>&nbsp;
+            <span className="text-purple-600">{command}</span>
+          </div>,
+          commands[command],
+          <br />
+        );
+      } else if (command === "resume") {
+        // Play the FBI sound for resume command
+        const fbiAudio = new Audio("/fbi-open-up_dwLhIFf.mp3");
+        playUiSound(fbiAudio, 0.5);
+
+        newOutput.push(
+          <div>
+            <span className="text-cyan-400">visitor@abdulrehman~$</span>&nbsp;
+            <span className="text-purple-600">{command}</span>
+          </div>,
+          commands[command],
+          <br />
+        );
+      }
+       else if (command === "socials") {
+        // Play the FBI sound for resume command
+        const fbiAudio = new Audio("/man-snoring-meme_ctrllNn.mp3");
+        playUiSound(fbiAudio, 0.5);
+
+        newOutput.push(
+          <div>
+            <span className="text-cyan-400">visitor@abdulrehman~$</span>&nbsp;
+            <span className="text-purple-600">{command}</span>
+          </div>,
+          commands[command],
+          <br />
+        );
+      }
+      else {
         newOutput.push(
           <div>
             <span className="text-cyan-400">visitor@abdulrehman~$</span>&nbsp;
@@ -343,7 +516,7 @@ const CLI = ({ secrets }) => {
         );
       } else {
         // Play error sound for unknown commands
-        errorAudioRef.current?.play().catch(() => {});
+        playUiSound(errorAudioRef.current);
 
         newOutput.push(
           <div>
@@ -366,7 +539,7 @@ const CLI = ({ secrets }) => {
   return (
     <div className="text-white  font-mono flex flex-col justify-start items-start h-screen ">
       {output.map((line, index) => (
-        <p
+        <div
           key={index}
           className={`whitespace-pre-wrap
            ${
@@ -377,7 +550,7 @@ const CLI = ({ secrets }) => {
            }`}
         >
           {line}
-        </p>
+        </div>
       ))}
       {/* ################################   Use Reference    #####################################*/}
       <div ref={outputEndRef} />
