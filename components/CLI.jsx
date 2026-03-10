@@ -73,23 +73,19 @@ const CLI = ({ secrets }) => {
     ),
     about: (
       <pre>
-        &nbsp;&nbsp;&nbsp;&nbsp;I’m a{" "}
-        <span className="text-orange-500">developer</span> from Nepal with a
-        focus on learning across a wide tech landscape—from <br></br>
-        backend services in{" "}
-        <span className="text-lime-500">.NET & Nodejs </span> to frontend
-        finesse with{" "}
-        <span className="text-lime-500">React, Next.js, and Tailwind CSS</span>.{" "}
+        &nbsp;&nbsp;&nbsp;&nbsp;Hi, I’m <span className="text-orange-500">Abdul Rehman</span>, a Full-Stack Developer with a strong interest in building scalable, modern web applications and solving real-world problems through technology.
         <br></br>
-        Always a learner, I believe in approaching challenges with{" "}
-        <span className="text-red-500">curiosity</span> and an eagerness to
-        expand my toolkit. <br></br>
-        If there’s one thing I’d say defines me, it’s my drive to understand how
-        each line of code connects to the bigger picture.<br></br>
-        I’m building cool things—
-        <span className="text-amber-500">one</span> project,{" "}
-        <span className="text-amber-500"> one </span>command,
-        <span className="text-amber-500"> one </span>insight at a time.,
+        I primarily work with JavaScript ecosystems including <span className="text-lime-500">React, Next.js, and the MERN stack</span>, and I enjoy creating clean, efficient, and user-focused digital products.
+        <br></br>
+        My experience includes developing dynamic web platforms, integrating complex backend services, and designing responsive interfaces that deliver smooth user experiences.
+        <br></br>
+        I’ve built projects ranging from real-time applications to large-scale web platforms, focusing on performance optimization, system architecture, and seamless API integrations.
+        <br></br>
+        One key project was an educational marketplace platform where I helped integrate a headless architecture combining an LMS with a CMS, enabling scalable course management and modern frontend experiences.
+        <br></br>
+        Beyond coding, I’m passionate about continuously improving my skills, exploring new tools in the web ecosystem, and building projects that push my technical abilities further.
+        <br></br>
+        My goal is to contribute to impactful products while growing as an engineer and problem solver.
       </pre>
     ),
     socials: (
@@ -127,22 +123,24 @@ const CLI = ({ secrets }) => {
         <ul className="pl-9">
           <li>
             <span className="text-orange-500">Frameworks and Libraries:</span>{" "}
-            Node.js, .NET , Express, ,React, Next.js, Tailwind
+            React.js, Next.js, Node.js, Express.js, Tailwind CSS, Bootstrap,
+            WordPress
           </li>
           <li>
-            <span className="text-orange-500">Databases:</span> MongoDB, MySQL
+            <span className="text-orange-500">Databases:</span> MongoDB, MySQL,
+            PostgreSQL
           </li>
           <li>
-            <span className="text-orange-500">Languages:</span> Javascript , C#
-            , Python , C++
+            <span className="text-orange-500">Languages:</span> JavaScript (ES6+),
+            PHP, HTML5, CSS3
           </li>
           <li>
             <span className="text-orange-500">Version Control:</span> Git,
             GitHub
           </li>
           <li>
-            <span className="text-orange-500">Miscellaneous:</span> Docker, Bash
-            , Bootstrap ,Postman , wsl
+            <span className="text-orange-500">Miscellaneous:</span> REST APIs,
+            Firebase, NPM, Postman, Vercel
           </li>
         </ul>
       </pre>
